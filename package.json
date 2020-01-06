@@ -1,6 +1,6 @@
 {
   "name": "aono-console-handler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Aono handler that write to a logs to terminal using methods of global console instance.Usable both in node and web browsers.",
   "main": "index.js",
   "scripts": {
