@@ -4,12 +4,13 @@ import { Handler, Entry, Level } from 'aono';
 export type LogMethod = (message : string, ...meta : any[]) => void;
 
 export interface Console {
-  trace : LogMethod;
   debug : LogMethod;
-  info : LogMethod;
+  log : LogMethod;
   warn : LogMethod;
   error : LogMethod;
 }
+
+const format = prepareFormatter();
 
 /**
  * @author Maciej Chalapuk (maciej@chalapuk.pl)
@@ -21,7 +22,6 @@ export class ConsoleHandler implements Handler {
     readonly console : Console,
   ) {
   }
-
   get messagesWritten() {
     return this._messagesWritten;
   }
@@ -34,14 +34,13 @@ export class ConsoleHandler implements Handler {
     entries.forEach(entry => {
       const { level, logger, message, meta } = entry;
 
-      const log : LogMethod = getBoundMethod(this.console, level);
-      const formatted = `${getIcon(level)} [${logger}]: ${message}`;
+      const log : LogMethod = getLogMethod(this.console, level);
+      const args = format(level, logger, message);
 
       if (Object.keys(meta).length !== 0) {
-        log(formatted, meta);
-      } else {
-        log(formatted);
+        args.push(meta);
       }
+      log.apply(this.console, args);
       this._messagesWritten += 1;
     });
 
@@ -51,18 +50,76 @@ export class ConsoleHandler implements Handler {
 
 export default ConsoleHandler;
 
-function getIcon(level : Level) {
-  switch (level) {
-    case 'trace': return '→';
-    case 'debug': return '⇒';
-    case 'info': return '✓';
-    case 'warn': return '⚠';
-    case 'error': return '💥'
-    default: throw new Error(`uncknown entry kevek`);
+function prepareFormatter() {
+  const window = global as any;
+
+  if (window.navigator && window.navigator.userAgent.matches(/.*(FireFox|Chrome|Chormium).*/)) {
+    return formatBrowser;
+  } else {
+    return formatNode;
   }
 }
 
-function getBoundMethod(instance : any, name : Level) {
-  return instance[name].bind(instance);
+function getLogMethod(console : Console, level : Level) {
+  switch (level) {
+    case 'trace':
+      // Not using `console.trace(...)` as it will print stack traces with every log entry.
+      return console.debug;
+    case 'debug':
+      return console.debug;
+    case 'info':
+      // Not using `console.info(...)` as it will print an icon in Firefox.
+      return console.log;
+    case 'warn':
+      return console.warn;
+    case 'error':
+      return console.error;
+    default:
+      throw new Error(`unknown log level: ${level}`);
+  }
 }
 
+function formatNode(level : Level, logger : string, message : string) : any[] {
+  return [ `${getNodeIcon(level)}[${logger}]: ${message}` ];
+}
+
+function formatBrowser(level : Level, logger : string, message : string) : any[] {
+  const icon = getBrowserIcon(level);
+  const color = getColorCss(level);
+  const bold = 'font-weight:bold;';
+
+  return [ `%c${icon}%c[%c${logger}%c]%c ${message}`, color + bold, bold, color + bold, bold, '' ];
+}
+
+function getNodeIcon(level : Level) {
+  switch (level) {
+    case 'trace': return '→ ';
+    case 'debug': return '⇒ ';
+    case 'info': return '✓ ';
+    case 'warn': return '⚠ ';
+    case 'error': return '💥 ';
+    default: throw new Error(`unknown log level: ${level}`);
+  }
+}
+
+function getBrowserIcon(level : Level) {
+  switch (level) {
+    case 'trace': return '→ ';
+    case 'debug': return '⇒ ';
+    case 'info': return '';
+    case 'warn': return '';
+    case 'error': return '';
+    default: throw new Error(`unknown log level: ${level}`);
+  }
+}
+
+function getColorCss(level : Level) {
+  switch (level) {
+    case 'trace': return 'color: #ff00ff;';
+    case 'debug': return 'color: #0000ff;';
+    case 'info': return 'color: #00ff00;';
+    case 'warn': return 'color: #ffff00;';
+    case 'error': return 'color: #ff0000;';
+    default: throw new Error(`unknown log level: ${level}`);
+  }
+}

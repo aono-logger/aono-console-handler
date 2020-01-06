@@ -11,9 +11,8 @@ import ConsoleHandler from './ConsoleHandler';
 
 describe('ConsoleHandler', () => {
   const console = {
-    trace: sinon.spy(),
     debug: sinon.spy(),
-    info: sinon.spy(),
+    log: sinon.spy(),
     warn: sinon.spy(),
     error: sinon.spy(),
   };
@@ -21,9 +20,8 @@ describe('ConsoleHandler', () => {
   let testedHandler : ConsoleHandler;
 
   afterEach(() => {
-    console.trace.resetHistory();
     console.debug.resetHistory();
-    console.info.resetHistory();
+    console.log.resetHistory();
     console.warn.resetHistory();
     console.error.resetHistory();
   });
@@ -58,15 +56,15 @@ describe('ConsoleHandler', () => {
       });
 
       it('wrote log entry to the console instance', () => {
-        console.info.should.have.callCount(1);
-        console.info.should.have.been.calledWithExactly('✓ [test]: hello, console!');
+        console.log.should.have.callCount(1);
+        console.log.should.have.been.calledWithExactly('✓ [test]: hello, console!');
       });
 
       describe('when after handling log entry with meta', () => {
         const entry : Entry = {
           timestamp: 0,
           logger: 'test',
-          level: 'debug',
+          level: 'trace',
           message: 'hello, debug!',
           meta: {
             number: 1,
@@ -83,7 +81,7 @@ describe('ConsoleHandler', () => {
 
         it('wrote log entry to the console instance', () => {
           console.debug.should.have.callCount(1);
-          console.debug.should.have.been.calledWithExactly('⇒ [test]: hello, debug!', entry.meta);
+          console.debug.should.have.been.calledWithExactly('→ [test]: hello, debug!', entry.meta);
         });
       });
     });
