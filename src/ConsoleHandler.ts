@@ -53,7 +53,7 @@ export default ConsoleHandler;
 function prepareFormatter() {
   const window = global as any;
 
-  if (window.navigator && window.navigator.userAgent.matches(/.*(FireFox|Chrome|Chormium).*/)) {
+  if (window.navigator && window.navigator.userAgent.match(/.*(FireFox|Chrome|Chormium).*/)) {
     return formatBrowser;
   } else {
     return formatNode;
