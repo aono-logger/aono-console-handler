@@ -80,44 +80,33 @@ function getLogMethod(console : Console, level : Level) {
 }
 
 function formatNode(level : Level, logger : string, message : string) : any[] {
-  return [ `${getNodeIcon(level)}[${logger}]: ${message}` ];
+  return [ `${getIcon(level)}[${logger}]: ${message}` ];
 }
 
 function formatBrowser(level : Level, logger : string, message : string) : any[] {
-  const icon = getBrowserIcon(level);
+  const icon = getIcon(level);
   const color = getColorCss(level);
   const bold = 'font-weight:bold;';
 
   return [ `%c${icon}%c[%c${logger}%c]%c ${message}`, color + bold, bold, color, bold, '' ];
 }
 
-function getNodeIcon(level : Level) {
+function getIcon(level : Level) {
   switch (level) {
     case 'trace': return '→ ';
     case 'debug': return '⇒ ';
     case 'info': return '✓ ';
-    case 'warn': return '⚠ ';
+    case 'warn': return '! ';
     case 'error': return '💥 ';
-    default: throw new Error(`unknown log level: ${level}`);
-  }
-}
-
-function getBrowserIcon(level : Level) {
-  switch (level) {
-    case 'trace': return '→ ';
-    case 'debug': return '⇒ ';
-    case 'info': return '';
-    case 'warn': return '';
-    case 'error': return '';
     default: throw new Error(`unknown log level: ${level}`);
   }
 }
 
 function getColorCss(level : Level) {
   switch (level) {
-    case 'trace': return 'color: #ff00ff;';
-    case 'debug': return 'color: #00ffff;';
-    case 'info': return 'color: #00ff00;';
+    case 'trace': return 'color: #ee44ff;';
+    case 'debug': return 'color: #44ccee;';
+    case 'info': return 'color: #00cc44;';
     case 'warn': return 'color: #ffff00;';
     case 'error': return 'color: #ff0000;';
     default: throw new Error(`unknown log level: ${level}`);
