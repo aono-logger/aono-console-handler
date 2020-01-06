@@ -27,9 +27,9 @@ export class ConsoleHandler implements Handler {
     return this._messagesWritten;
   }
 
-  async write(entries : Entry[]) : Promise<void> {
+  write(entries : Entry[]) : Promise<void> {
     if (entries.length === 0) {
-      return;
+      return FakePromise.resolve();
     }
 
     entries.forEach(entry => {
