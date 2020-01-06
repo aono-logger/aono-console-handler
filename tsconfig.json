@@ -24,6 +24,7 @@
     "types": [
       "node",
       "aono",
+      "fake-promise",
       "mocha",
       "should",
       "sinon",

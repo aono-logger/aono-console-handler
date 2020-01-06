@@ -1,5 +1,6 @@
 
 import { Handler, Entry, Level } from 'aono';
+import FakePromise from 'fake-promise';
 
 export type LogMethod = (message : string, ...meta : any[]) => void;
 
@@ -44,7 +45,8 @@ export class ConsoleHandler implements Handler {
       this._messagesWritten += 1;
     });
 
-    return Promise.resolve();
+    // Using FakePromise instead of promise in order to finish writing logs in current tick.
+    return FakePromise.resolve();
   }
 }
 
