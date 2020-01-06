@@ -88,7 +88,7 @@ function formatBrowser(level : Level, logger : string, message : string) : any[]
   const color = getColorCss(level);
   const bold = 'font-weight:bold;';
 
-  return [ `%c${icon}%c[%c${logger}%c]%c ${message}`, color + bold, bold, color + bold, bold, '' ];
+  return [ `%c${icon}%c[%c${logger}%c]%c ${message}`, color + bold, bold, color, bold, '' ];
 }
 
 function getNodeIcon(level : Level) {
@@ -116,7 +116,7 @@ function getBrowserIcon(level : Level) {
 function getColorCss(level : Level) {
   switch (level) {
     case 'trace': return 'color: #ff00ff;';
-    case 'debug': return 'color: #0000ff;';
+    case 'debug': return 'color: #00ffff;';
     case 'info': return 'color: #00ff00;';
     case 'warn': return 'color: #ffff00;';
     case 'error': return 'color: #ff0000;';
