@@ -34,7 +34,9 @@
     "url": "https://github.com/aono-logger/aono-console-handler/issues"
   },
   "homepage": "https://github.com/aono-logger/aono-console-handler#readme",
-  "dependencies": {},
+  "dependencies": {
+    "fake-promise": "^2.5.22"
+  },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.7",
@@ -42,7 +44,6 @@
     "@types/should": "^13.0.0",
     "@types/should-sinon": "0.0.5",
     "@types/sinon": "^7.5.1",
-    "fake-promise": "^2.5.22",
     "glob": "^7.1.6",
     "mocha": "^7.0.0",
     "should": "^13.2.3",
