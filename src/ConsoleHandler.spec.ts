@@ -57,7 +57,7 @@ describe('ConsoleHandler', () => {
 
       it('wrote log entry to the console instance', () => {
         console.log.should.have.callCount(1);
-        console.log.should.have.been.calledWithExactly('✓ [test]: hello, console!');
+        console.log.should.have.been.calledWithExactly('✅ [test]: hello, console!');
       });
 
       describe('when after handling log entry with meta', () => {
@@ -81,7 +81,7 @@ describe('ConsoleHandler', () => {
 
         it('wrote log entry to the console instance', () => {
           console.debug.should.have.callCount(1);
-          console.debug.should.have.been.calledWithExactly('→ [test]: hello, debug!', entry.meta);
+          console.debug.should.have.been.calledWithExactly('✴︎ [test]: hello, debug!', entry.meta);
         });
       });
     });

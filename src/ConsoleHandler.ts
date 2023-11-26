@@ -95,11 +95,11 @@ function formatBrowser(level : Level, logger : string, message : string) : any[]
 
 function getIcon(level : Level) {
   switch (level) {
-    case 'trace': return '→ ';
-    case 'debug': return '⇒ ';
-    case 'info': return '✓ ';
-    case 'warn': return '! ';
-    case 'error': return '💥 ';
+    case 'trace': return '✴︎ ';
+    case 'debug': return '➤ ';
+    case 'info':  return '✅ ';
+    case 'warn':  return '🟡 ';
+    case 'error': return '🟥 ';
     default: throw new Error(`unknown log level: ${level}`);
   }
 }
