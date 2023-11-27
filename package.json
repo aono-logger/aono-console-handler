@@ -54,6 +54,6 @@
     "typescript": "^4.1.3"
   },
   "peerDependencies": {
-    "aono": "^1.1.0"
+    "aono": "^2.0.0"
   }
 }

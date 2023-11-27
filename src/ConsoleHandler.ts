@@ -2,7 +2,7 @@
 import { Handler, Entry, Level } from 'aono';
 import FakePromise from 'fake-promise';
 
-export type LogMethod = (message : string, ...meta : any[]) => void;
+export type LogMethod = (message : string, ...data : any[]) => void;
 
 export interface Console {
   debug : LogMethod;
@@ -33,13 +33,13 @@ export class ConsoleHandler implements Handler {
     }
 
     entries.forEach(entry => {
-      const { level, logger, message, meta } = entry;
+      const { level, logger, message, data } = entry;
 
       const log : LogMethod = getLogMethod(this.console, level);
       const args = format(level, logger, message);
 
-      if (Object.keys(meta).length !== 0) {
-        args.push(meta);
+      if (Object.keys(data).length !== 0) {
+        args.push(data);
       }
       log.apply(this.console, args);
       this._messagesWritten += 1;

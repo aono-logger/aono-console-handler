@@ -38,13 +38,13 @@ describe('ConsoleHandler', () => {
       testedHandler.messagesWritten.should.equal(0);
     });
 
-    describe('when after handling log entry without meta', () => {
+    describe('when after handling log entry without data', () => {
       const entry : Entry = {
         timestamp: 0,
         logger: 'test',
         level: 'info',
         message: 'hello, console!',
-        meta: {},
+        data: {},
       };
 
       beforeEach(() => {
@@ -60,13 +60,13 @@ describe('ConsoleHandler', () => {
         console.log.should.have.been.calledWithExactly('✅ [test]: hello, console!');
       });
 
-      describe('when after handling log entry with meta', () => {
+      describe('when after handling log entry with data', () => {
         const entry : Entry = {
           timestamp: 0,
           logger: 'test',
           level: 'trace',
           message: 'hello, debug!',
-          meta: {
+          data: {
             number: 1,
           },
         };
@@ -81,7 +81,7 @@ describe('ConsoleHandler', () => {
 
         it('wrote log entry to the console instance', () => {
           console.debug.should.have.callCount(1);
-          console.debug.should.have.been.calledWithExactly('✴︎ [test]: hello, debug!', entry.meta);
+          console.debug.should.have.been.calledWithExactly('✴︎ [test]: hello, debug!', entry.data);
         });
       });
     });
