@@ -27,11 +27,19 @@ export class ConsoleHandler implements Handler {
 
   private _messagesWritten = 0;
 
+  constructor(console: Console);
+  constructor(init: ConsoleHandlerInit);
+
   constructor(
-    { console, printData }: ConsoleHandlerInit,
+    arg: Console | ConsoleHandlerInit,
   ) {
-    this.console = console;
-    this.printData = printData || false;
+    if ("console" in arg) {
+      this.console = arg.console;
+      this.printData = arg.printData || false;
+    } else {
+      this.console = arg;
+      this.printData = false;
+    }
   }
   get messagesWritten() {
     return this._messagesWritten;
