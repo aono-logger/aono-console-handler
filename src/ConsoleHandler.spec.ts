@@ -28,7 +28,7 @@ describe('ConsoleHandler', () => {
 
   describe('after creation', () => {
     beforeEach(() => {
-      testedHandler = new ConsoleHandler(console);
+      testedHandler = new ConsoleHandler({ console, printData: true });
     });
 
     it('contains passed parameters', () => {

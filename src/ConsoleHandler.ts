@@ -11,17 +11,27 @@ export interface Console {
   error : LogMethod;
 }
 
+export interface ConsoleHandlerInit {
+  console: Console
+  printData?: boolean
+}
+
 const format = prepareFormatter();
 
 /**
  * @author Maciej Chalapuk (maciej@chalapuk.pl)
  */
 export class ConsoleHandler implements Handler {
+  readonly console: Console
+  readonly printData: boolean
+
   private _messagesWritten = 0;
 
   constructor(
-    readonly console : Console,
+    { console, printData }: ConsoleHandlerInit,
   ) {
+    this.console = console;
+    this.printData = printData || false;
   }
   get messagesWritten() {
     return this._messagesWritten;
@@ -38,7 +48,7 @@ export class ConsoleHandler implements Handler {
       const log : LogMethod = getLogMethod(this.console, level);
       const args = format(level, logger, message);
 
-      if (Object.keys(data).length !== 0) {
+      if (this.printData && Object.keys(data).length !== 0) {
         args.push(data);
       }
       log.apply(this.console, args);
